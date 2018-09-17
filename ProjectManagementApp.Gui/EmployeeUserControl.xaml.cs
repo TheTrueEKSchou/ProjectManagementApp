@@ -71,7 +71,19 @@ namespace ProjectManagementApp.Gui
             }
 		}
 
-		private void Button_UpdateContactInfo_Click(object sender, RoutedEventArgs e)
+        private void Button_RemoveEmployee_Click(object sender, RoutedEventArgs e)
+        {
+            if(selectedEmployee != null)
+            {
+                Employee employee = model.Employees.Find(selectedEmployee.Id);
+                model.Employees.Remove(employee);
+                model.SaveChanges();
+                ClearTextBoxes();
+                DataGrid_Employees.ItemsSource = model.Employees.ToList();
+            }
+        }
+
+        private void Button_UpdateContactInfo_Click(object sender, RoutedEventArgs e)
 		{
             if (selectedEmployee != null)
             {
@@ -140,5 +152,5 @@ namespace ProjectManagementApp.Gui
 				ClearTextBoxes();
             }
 		}
-	}
+    }
 }

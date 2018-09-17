@@ -60,8 +60,9 @@
                     <TextBox Grid.Column="1" Grid.Row="2" Height="25" x:Name="TextBox_Ssn"/>
                     <Label Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Månedsløn: "/>
                     <TextBox Grid.Column="3" Grid.Row="2" Height="25" x:Name="TextBox_Salary"/>
-                    <Button Grid.Column="2" Grid.Row="3" Height="25" Content="Gem ny" x:Name="Button_SaveNewEmployee" Click="Button_SaveNewEmployee_Click"/>
-                    <Button Grid.Column="3" Grid.Row="3" Height="25" Content="Opdater" x:Name="Button_UpdateEmployee" Click="Button_UpdateEmployee_Click"/>
+                    <Button Grid.Column="1" Grid.Row="3" Height="25" Content="Fjern" x:Name="Button_RemoveEmployee" Click="Button_RemoveEmployee_Click"/>
+                    <Button Grid.Column="2" Grid.Row="3" Height="25" Content="Opdater" x:Name="Button_UpdateEmployee" Click="Button_UpdateEmployee_Click"/>
+                    <Button Grid.Column="3" Grid.Row="3" Height="25" Content="Gem ny" x:Name="Button_SaveNewEmployee" Click="Button_SaveNewEmployee_Click"/>
                 </Grid>
                 <Line Grid.Row="1" Stroke="Gray" StrokeThickness="5" X1="0" Y1="10" X2="1000" Y2="10"/>
                 <Grid Grid.Row="2">
