@@ -24,5 +24,10 @@ namespace ProjectManagementApp.Gui
         {
             InitializeComponent();
         }
+
+        private void Button_RemoveProject_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

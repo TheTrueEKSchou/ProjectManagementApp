@@ -13,10 +13,89 @@
         </Grid.ColumnDefinitions>
 
         <GroupBox Grid.Column="0" Margin="10" Header="Oversigt">
-
+            <Grid>
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="10" x:Name="DataGrid_Projects">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Navn" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Description}"/>
+                        <DataGridTextColumn Header="Start dato" Binding="{Binding StartDate}"/>
+                        <DataGridTextColumn Header="Slut dato" Binding="{Binding EndDate}"/>
+                        <DataGridTextColumn Header="Budget grænse" Binding="{Binding BudgetLimit}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </GroupBox>
         <GroupBox Grid.Column="1" Margin="10" Header="Detaljer">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="Navn: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Height="25" x:Name="TextBox_Name"/>
+                    <Label Grid.Column="2" Grid.Row="0" Content="Beskrivelse: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="3" Grid.Row="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" x:Name="TextBox_Description"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Start dato: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <DatePicker Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" x:Name="DatePicker_StartDate"/>
+                    <Label Grid.Column="2" Grid.Row="1" Content="Slut dato: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <DatePicker Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" x:Name="DatePicker_EndDate"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Budget grænse: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Height="25" x:Name="TextBox_BudgetLimit"/>
+                    <Button Grid.Column="1" Grid.Row="3" Height="25" Content="Fjern" x:Name="Button_RemoveProject" Click="Button_RemoveProject_Click"/>
+                </Grid>
+                <Line Grid.Row="1" Stroke="Gray" StrokeThickness="5" X1="0" Y1="10" X2="1000" Y2="10"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+
+                    </Grid>
+                    <GroupBox Grid.Column="1" Margin="10" Header="Ansatte">
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="10" x:Name="DataGrid_Employees" SelectionChanged="DataGrid_Employees_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Fornavn" Binding="{Binding FirstName}"/>
+                                <DataGridTextColumn Header="Efternavn" Binding="{Binding LastName}"/>
+                                <DataGridTextColumn Header="Team" Binding="{Binding Team.Name}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" Grid.Row="3" Content="Tilsæt" Height="25" x:Name="Button_AddToTeam" Click="Button_AddToTeam_Click"/>
+                        <Button Grid.Column="1" Grid.Row="3" Content="Fjern" Height="25" x:Name="Button_RemoveFromTeam" Click="Button_RemoveFromTeam_Click"/>
+                    </Grid>
+                </Grid>
+            </Grid>
         </GroupBox>
     </Grid>
 </UserControl>
