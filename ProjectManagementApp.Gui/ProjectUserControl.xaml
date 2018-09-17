@@ -14,7 +14,7 @@
 
         <GroupBox Grid.Column="0" Margin="10" Header="Oversigt">
             <Grid>
-                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="10" x:Name="DataGrid_Projects">
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="10" x:Name="DataGrid_Projects" SelectionChanged="DataGrid_Projects_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Navn" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Description}"/>
@@ -58,6 +58,8 @@
                     <Label Grid.Column="0" Grid.Row="2" Content="Budget grænse: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox Grid.Column="1" Grid.Row="2" Height="25" x:Name="TextBox_BudgetLimit"/>
                     <Button Grid.Column="1" Grid.Row="3" Height="25" Content="Fjern" x:Name="Button_RemoveProject" Click="Button_RemoveProject_Click"/>
+                    <Button Grid.Column="2" Grid.Row="3" Height="25" Content="Opdater" x:Name="Button_UpdateProject" Click="Button_UpdateProject_Click"/>
+                    <Button Grid.Column="3" Grid.Row="3" Height="25" Content="Gem ny" x:Name="Button_SaveNewProject" Click="Button_SaveNewProject_Click"/>
                 </Grid>
                 <Line Grid.Row="1" Stroke="Gray" StrokeThickness="5" X1="0" Y1="10" X2="1000" Y2="10"/>
                 <Grid Grid.Row="2">
