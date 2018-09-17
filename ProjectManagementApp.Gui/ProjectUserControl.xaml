@@ -62,7 +62,7 @@
                     <Button Grid.Column="3" Grid.Row="3" Height="25" Content="Gem ny" x:Name="Button_SaveNewProject" Click="Button_SaveNewProject_Click"/>
                 </Grid>
                 <Line Grid.Row="1" Stroke="Gray" StrokeThickness="5" X1="0" Y1="10" X2="1000" Y2="10"/>
-                <Grid Grid.Row="2">
+                <!--<Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -96,7 +96,7 @@
                         <Button Grid.Column="0" Grid.Row="3" Content="Tilsæt" Height="25" x:Name="Button_AddToTeam" Click="Button_AddToTeam_Click"/>
                         <Button Grid.Column="1" Grid.Row="3" Content="Fjern" Height="25" x:Name="Button_RemoveFromTeam" Click="Button_RemoveFromTeam_Click"/>
                     </Grid>
-                </Grid>
+                </Grid>-->
             </Grid>
         </GroupBox>
     </Grid>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManagementApp.EF
 {
-    static class Validate
+    public static class Validate
     {
         public static bool IsPersonNameValid(string s)
         {
@@ -37,21 +37,58 @@ namespace ProjectManagementApp.EF
                 return false;
         }
 
-        public static bool IsBirthDateValid(DateTime date)
+        public static bool IsDateValid(string s,out DateTime date)
         {
-            if(date < DateTime.Today)
-                return true;
+            bool dateBool = DateTime.TryParse(s,out date);
+            if (dateBool)
+            {
+                if (date < DateTime.Today)
+                    return true;
+                else
+                    return false;
+            }
             else
+            {
                 return false;
+            }
         }
 
-        public static bool IsSsnValid(string s)
+        public static bool IsSsnValid(string s, out string ssn)
         {
+            ssn = s;
             Regex regex = new Regex(@"^\d{6}[- ]?\d{4}");
             if (regex.IsMatch(s))
+            {
+                if (s.Contains(" "))
+                {
+                    ssn = s.Replace(" ","-");
+                }
+                else if (!s.Contains("-"))
+                {
+                    ssn = s.Insert(6,"-");
+                }
                 return true;
+            }
             else
+            {
                 return false;
+            }
+                
+        }
+
+        public static bool IsSalaryValid(string s,out decimal salary)
+        {
+            Regex regex = new Regex(@"^\d+([\.,]\d+)?");
+            if (regex.IsMatch(s))
+            {
+                salary = Convert.ToDecimal(s);
+                return true;
+            }
+            else
+            {
+                salary = default;
+                return false;
+            }
         }
 
         public static bool IsEntityNameValid(string s)

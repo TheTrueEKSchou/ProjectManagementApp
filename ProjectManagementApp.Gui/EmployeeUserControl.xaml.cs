@@ -51,13 +51,51 @@ namespace ProjectManagementApp.Gui
             }
         }
 
+        private bool ValidateInput(out DateTime birthDate, out DateTime startDate, out string ssn, out Decimal salary)
+        {
+            bool firstNameBool = Validate.IsPersonNameValid(TextBox_FirstName.Text);
+            bool lastNameBool = Validate.IsPersonNameValid(TextBox_LastName.Text);
+            bool birthDateBool = Validate.IsDateValid(DatePicker_BirthDate.Text, out birthDate);
+            bool startDateBool = Validate.IsDateValid(DatePicker_StartDate.Text, out startDate);
+            bool ssnBool = Validate.IsSsnValid(TextBox_Ssn.Text, out ssn);
+            bool salaryBool = Validate.IsSalaryValid(TextBox_Salary.Text, out salary);
+            if(firstNameBool && lastNameBool && birthDateBool && startDateBool && ssnBool && salaryBool)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 		private void Button_SaveNewEmployee_Click(object sender, RoutedEventArgs e)
 		{
 			Employee employee = new Employee();
-            CheckStuff(employee);
-            model.Employees.Add(employee);
-            model.SaveChanges();
-            DataGrid_Employees.ItemsSource = model.Employees.ToList();
+            bool inputIsValid = ValidateInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
+            if (inputIsValid)
+            {
+                try
+                {
+                    employee.FirstName = TextBox_FirstName.Text;
+                    employee.LastName = TextBox_LastName.Text;
+                    employee.BirthDate = birthDate;
+                    employee.StartDate = startDate;
+                    employee.Ssn = ssn;
+                    employee.Salary = salary;
+                    model.Employees.Add(employee);
+                    model.SaveChanges();
+                    DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Noget gik galt: "+ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
+            }
         }
 		
 		private void Button_UpdateEmployee_Click(object sender, RoutedEventArgs e)
@@ -65,9 +103,30 @@ namespace ProjectManagementApp.Gui
             if(selectedEmployee != null)
             {
                 Employee employee = model.Employees.Find(selectedEmployee.Id);
-                CheckStuff(employee);
-                model.SaveChanges();
-                DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                bool inputIsValid = ValidateInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
+                if (inputIsValid)
+                {
+                    try
+                    {
+                        employee.FirstName = TextBox_FirstName.Text;
+                        employee.LastName = TextBox_LastName.Text;
+                        employee.BirthDate = birthDate;
+                        employee.StartDate = startDate;
+                        employee.Ssn = ssn;
+                        employee.Salary = salary;
+                        model.Employees.Add(employee);
+                        model.SaveChanges();
+                        DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Noget gik galt: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
+                }
             }
 		}
 
