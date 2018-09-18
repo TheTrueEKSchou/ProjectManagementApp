@@ -35,8 +35,8 @@ namespace ProjectManagementApp.EF
             {
                 phone = phone.Remove(index, 1).Insert(index, "_");
             }
-            //Regex regex = new Regex(@"^(\+45 ?)?(\d ?){7}\d$");//For Danish phone numbers
-            Regex regex = new Regex(@"^(\+\d{1,3} ?)?(\d ?)+\d$");//For international phone numbers
+            //Regex regex = new Regex(@"^(\+45 ?)?(\d ?){7}\d$");//For Danish phone numbers only
+            Regex regex = new Regex(@"^(\+\d{1,3} ?)?(\d ?)+\d$");//For various phone numbers
             if (regex.IsMatch(s))
             {
                 if (phone.Contains("+45"))
