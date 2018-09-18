@@ -31,26 +31,6 @@ namespace ProjectManagementApp.Gui
 			DataGrid_Employees.ItemsSource = model.Employees.ToList();
 		}
 
-        public void CheckStuff(Employee employee)
-        {
-            bool birthDateBool = DateTime.TryParse(DatePicker_BirthDate.Text, out DateTime birthDate);
-            bool startDateBool = DateTime.TryParse(DatePicker_StartDate.Text, out DateTime startDate);
-            decimal salary = decimal.TryParse(TextBox_Salary.Text, out decimal amount) ? amount : 0.0m;
-            if(birthDateBool == true && startDateBool == true)
-            {
-                if (!string.IsNullOrWhiteSpace(TextBox_FirstName.Text) && !string.IsNullOrWhiteSpace(TextBox_LastName.Text) && !string.IsNullOrWhiteSpace(TextBox_Ssn.Text))
-                {
-                    employee.FirstName = TextBox_FirstName.Text;
-                    employee.LastName = TextBox_LastName.Text;
-                    employee.BirthDate = birthDate;
-                    employee.StartDate = startDate;
-                    employee.Ssn = TextBox_Ssn.Text;
-                    employee.Salary = salary;
-                    ClearTextBoxes();
-                }
-            }
-        }
-
         private bool ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out Decimal salary)
         {
             bool firstNameBool = Validate.IsPersonNameValid(TextBox_FirstName.Text);
@@ -85,12 +65,12 @@ namespace ProjectManagementApp.Gui
 
 		private void Button_SaveNewEmployee_Click(object sender, RoutedEventArgs e)
 		{
-			Employee employee = new Employee();
             bool inputIsValid = ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
             if (inputIsValid)
             {
                 try
                 {
+                    Employee employee = new Employee();
                     employee.FirstName = TextBox_FirstName.Text;
                     employee.LastName = TextBox_LastName.Text;
                     employee.BirthDate = birthDate;
@@ -99,6 +79,7 @@ namespace ProjectManagementApp.Gui
                     employee.Salary = salary;
                     model.Employees.Add(employee);
                     model.SaveChanges();
+                    ClearTextBoxes();
                     DataGrid_Employees.ItemsSource = model.Employees.ToList();
                 }
                 catch (Exception ex)
@@ -116,12 +97,12 @@ namespace ProjectManagementApp.Gui
 		{
             if(selectedEmployee != null)
             {
-                Employee employee = model.Employees.Find(selectedEmployee.Id);
                 bool inputIsValid = ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
                 if (inputIsValid)
                 {
                     try
                     {
+                        Employee employee = model.Employees.Find(selectedEmployee.Id);
                         employee.FirstName = TextBox_FirstName.Text;
                         employee.LastName = TextBox_LastName.Text;
                         employee.BirthDate = birthDate;
@@ -130,6 +111,7 @@ namespace ProjectManagementApp.Gui
                         employee.Salary = salary;
                         model.Employees.Add(employee);
                         model.SaveChanges();
+                        ClearTextBoxes();
                         DataGrid_Employees.ItemsSource = model.Employees.ToList();
                     }
                     catch (Exception ex)
@@ -160,11 +142,11 @@ namespace ProjectManagementApp.Gui
 		{
             if (selectedEmployee != null)
             {
-                Employee employee = model.Employees.Find(selectedEmployee.Id);
                 bool InputIsValid = ValidateContactInput(out string phone);
                 if (InputIsValid)
                 {
-                    if(employee.ContactInfo == null)
+                    Employee employee = model.Employees.Find(selectedEmployee.Id);
+                    if (employee.ContactInfo == null)
                     {
                         ContactInfo contactInfo = new ContactInfo();
                         try

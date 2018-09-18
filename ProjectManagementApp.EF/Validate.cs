@@ -114,7 +114,7 @@ namespace ProjectManagementApp.EF
 
         public static bool IsEntityNameValid(string s)
         {
-            Regex regex = new Regex("^[A-Z][A-Za-z0-9]{0,49}$");
+            Regex regex = new Regex("^[A-Z][A-Za-z0-9 ]{0,49}$");
             if (regex.IsMatch(s))
                 return true;
             else

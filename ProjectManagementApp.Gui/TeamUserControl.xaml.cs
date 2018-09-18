@@ -32,17 +32,18 @@ namespace ProjectManagementApp.Gui
             DataGrid_Employees.ItemsSource = model.Employees.ToList();
         }
 
-        public void CheckStuff(Team team)
+        private bool ValidateTeamInput(out DateTime startDate, out DateTime endDate)
         {
-            bool startDateBool = DateTime.TryParse(DatePicker_StartDate.Text, out DateTime startDate);
-            bool endDateBool = DateTime.TryParse(DatePicker_EndDate.Text, out DateTime endDate);
-            if (startDateBool == true && endDateBool == true && !string.IsNullOrWhiteSpace(TextBox_Name.Text))
+            bool nameBool = Validate.IsEntityNameValid(TextBox_Name.Text);
+            bool startDateBool = Validate.IsDateValid(DatePicker_StartDate.Text, out startDate);
+            bool endDateBool = Validate.IsDateValid(DatePicker_EndDate.Text, out endDate);
+            if(nameBool && startDateBool && endDateBool)
             {
-                team.Name = TextBox_Name.Text;
-                team.Description = TextBox_Description.Text;
-                team.StartDate = startDate;
-                team.ExpectedEnd = endDate;
-                ClearTextBoxes();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -58,24 +59,85 @@ namespace ProjectManagementApp.Gui
             }
         }
 
-        private void Buttn_SaveNew_Click(object sender, RoutedEventArgs e)
+        private void Button_SaveNew_Click(object sender, RoutedEventArgs e)
         {
-            Team team = new Team();
-            CheckStuff(team);
-            model.Teams.Add(team);
-            model.SaveChanges();
-            DataGrid_Teams.ItemsSource = model.Teams.ToList();
+            bool inputIsValid = ValidateTeamInput(out DateTime startDate, out DateTime endDate);
+            if (inputIsValid)
+            {
+                try
+                {
+                    Team team = new Team
+                    {
+                        Name = TextBox_Name.Text,
+                        Description = TextBox_Description.Text,
+                        StartDate = startDate,
+                        ExpectedEnd = endDate
+                    };
+                    model.Teams.Add(team);
+                    model.SaveChanges();
+                    ClearTextBoxes();
+                    DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Noget gik galt: "+ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
+            }
         }
 
-        private void Buttn_Update_Click(object sender, RoutedEventArgs e)
+        private void Button_Update_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTeam != null)
+            {
+                bool inputIsValid = ValidateTeamInput(out DateTime startDate, out DateTime endDate);
+                if (inputIsValid)
+                {
+                    try
+                    {
+                        Team team = model.Teams.Find(selectedTeam.Id);
+                        team.Name = TextBox_Name.Text;
+                        team.Description = TextBox_Description.Text;
+                        team.StartDate = startDate;
+                        team.ExpectedEnd = endDate;
+                        model.SaveChanges();
+                        ClearTextBoxes();
+                        DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                        DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Noget gik galt: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
+                }
+            }
+        }
+
+        private void Button_Remove_Click(object sender, RoutedEventArgs e)
         {
             if (selectedTeam != null)
             {
                 Team team = model.Teams.Find(selectedTeam.Id);
-                CheckStuff(team);
-                DataGrid_Teams.SelectedItem = null;
+                List<Employee> employees = model.Employees.ToList();
+                foreach(Employee employee in employees)
+                {
+                    if(employee.TeamId == team.Id)
+                    {
+                        employee.TeamId = null;
+                    }
+                }
+                model.Teams.Remove(team);
                 model.SaveChanges();
+                ClearTextBoxes();
                 DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                DataGrid_Employees.ItemsSource = model.Employees.ToList();
             }
         }
 
