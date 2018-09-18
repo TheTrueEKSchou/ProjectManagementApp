@@ -30,14 +30,82 @@ namespace ProjectManagementApp.Gui
             DataGrid_Projects.ItemsSource = model.Projects.ToList();
         }
 
+        private bool ValidateProjectInput(out DateTime startDate, out DateTime endDate, out decimal budgetLimit)
+        {
+            bool nameBool = Validate.IsEntityNameValid(TextBox_Name.Text);
+            bool startDateBool = Validate.IsDateValid(DatePicker_StartDate.Text, out startDate);
+            bool endDateBool = Validate.IsFutureDateValid(DatePicker_EndDate.Text, out endDate);
+            bool budgetLimitBool = Validate.IsSalaryValid(TextBox_BudgetLimit.Text, out budgetLimit);
+            if(nameBool && startDateBool && endDateBool && budgetLimitBool)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void Button_SaveNewProject_Click(object sender, RoutedEventArgs e)
         {
-
+            bool inputIsValid = ValidateProjectInput(out DateTime startDate, out DateTime endDate, out decimal budgetLimit);
+            if (inputIsValid)
+            {
+                try
+                {
+                    Project project = new Project
+                    {
+                        Name = TextBox_Name.Text,
+                        Description = TextBox_Description.Text,
+                        StartDate = startDate,
+                        EndDate = endDate,
+                        BudgetLimit = budgetLimit
+                    };
+                    model.Projects.Add(project);
+                    model.SaveChanges();
+                    ClearTextBoxes();
+                    DataGrid_Projects.ItemsSource = model.Projects.ToList();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Noget gik galt: "+ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
+            }
         }
 
         private void Button_UpdateProject_Click(object sender, RoutedEventArgs e)
         {
-
+            if(selectedProject != null)
+            {
+                bool inputIsValid = ValidateProjectInput(out DateTime startDate, out DateTime endDate, out decimal budgetLimit);
+                if (inputIsValid)
+                {
+                    try
+                    {
+                        Project project = model.Projects.Find(selectedProject.Id);
+                        project.Name = TextBox_Name.Text;
+                        project.Description = TextBox_Description.Text;
+                        project.StartDate = startDate;
+                        project.EndDate = endDate;
+                        project.BudgetLimit = budgetLimit;
+                        model.SaveChanges();
+                        ClearTextBoxes();
+                        DataGrid_Projects.ItemsSource = model.Projects.ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Noget gik galt: "+ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
+                }
+            }
         }
 
         private void Button_RemoveProject_Click(object sender, RoutedEventArgs e)

@@ -35,7 +35,7 @@ namespace ProjectManagementApp.Gui
         {
             bool firstNameBool = Validate.IsPersonNameValid(TextBox_FirstName.Text);
             bool lastNameBool = Validate.IsPersonNameValid(TextBox_LastName.Text);
-            bool birthDateBool = Validate.IsDateValid(DatePicker_BirthDate.Text, out birthDate);
+            bool birthDateBool = Validate.IsPastDateValid(DatePicker_BirthDate.Text, out birthDate);
             bool startDateBool = Validate.IsDateValid(DatePicker_StartDate.Text, out startDate);
             bool ssnBool = Validate.IsSsnValid(TextBox_Ssn.Text, out ssn);
             bool salaryBool = Validate.IsSalaryValid(TextBox_Salary.Text, out salary);
@@ -70,13 +70,15 @@ namespace ProjectManagementApp.Gui
             {
                 try
                 {
-                    Employee employee = new Employee();
-                    employee.FirstName = TextBox_FirstName.Text;
-                    employee.LastName = TextBox_LastName.Text;
-                    employee.BirthDate = birthDate;
-                    employee.StartDate = startDate;
-                    employee.Ssn = ssn;
-                    employee.Salary = salary;
+                    Employee employee = new Employee
+                    {
+                        FirstName = TextBox_FirstName.Text,
+                        LastName = TextBox_LastName.Text,
+                        BirthDate = birthDate,
+                        StartDate = startDate,
+                        Ssn = ssn,
+                        Salary = salary
+                    };
                     model.Employees.Add(employee);
                     model.SaveChanges();
                     ClearTextBoxes();
@@ -109,7 +111,6 @@ namespace ProjectManagementApp.Gui
                         employee.StartDate = startDate;
                         employee.Ssn = ssn;
                         employee.Salary = salary;
-                        model.Employees.Add(employee);
                         model.SaveChanges();
                         ClearTextBoxes();
                         DataGrid_Employees.ItemsSource = model.Employees.ToList();

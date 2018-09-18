@@ -60,10 +60,39 @@ namespace ProjectManagementApp.EF
 
         public static bool IsDateValid(string s, out DateTime date)
         {
+            bool dateBool = DateTime.TryParse(s, out date);
+            if (dateBool)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool IsPastDateValid(string s, out DateTime date)
+        {
             bool dateBool = DateTime.TryParse(s,out date);
             if (dateBool)
             {
                 if (date < DateTime.Today)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool IsFutureDateValid(string s, out DateTime date)
+        {
+            bool dateBool = DateTime.TryParse(s, out date);
+            if (dateBool)
+            {
+                if (date > DateTime.Today)
                     return true;
                 else
                     return false;
@@ -99,17 +128,12 @@ namespace ProjectManagementApp.EF
 
         public static bool IsSalaryValid(string s, out decimal salary)
         {
-            Regex regex = new Regex(@"^\d+([\.,]\d+)?");
-            if (regex.IsMatch(s))
-            {
-                salary = Convert.ToDecimal(s);
+            s = s.Replace(".", ",");
+            bool isDecimal = Decimal.TryParse(s, out salary);
+            if (salary > 0.0m)
                 return true;
-            }
             else
-            {
-                salary = default;
                 return false;
-            }
         }
 
         public static bool IsEntityNameValid(string s)

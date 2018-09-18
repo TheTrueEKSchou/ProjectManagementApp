@@ -36,7 +36,7 @@ namespace ProjectManagementApp.Gui
         {
             bool nameBool = Validate.IsEntityNameValid(TextBox_Name.Text);
             bool startDateBool = Validate.IsDateValid(DatePicker_StartDate.Text, out startDate);
-            bool endDateBool = Validate.IsDateValid(DatePicker_EndDate.Text, out endDate);
+            bool endDateBool = Validate.IsFutureDateValid(DatePicker_EndDate.Text, out endDate);
             if(nameBool && startDateBool && endDateBool)
             {
                 return true;
