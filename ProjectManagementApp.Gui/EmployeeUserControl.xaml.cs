@@ -36,7 +36,7 @@ namespace ProjectManagementApp.Gui
             bool birthDateBool = DateTime.TryParse(DatePicker_BirthDate.Text, out DateTime birthDate);
             bool startDateBool = DateTime.TryParse(DatePicker_StartDate.Text, out DateTime startDate);
             decimal salary = decimal.TryParse(TextBox_Salary.Text, out decimal amount) ? amount : 0.0m;
-            if(birthDateBool == true && startDateBool == true)//if(a == b == c == true)?
+            if(birthDateBool == true && startDateBool == true)
             {
                 if (!string.IsNullOrWhiteSpace(TextBox_FirstName.Text) && !string.IsNullOrWhiteSpace(TextBox_LastName.Text) && !string.IsNullOrWhiteSpace(TextBox_Ssn.Text))
                 {
@@ -51,7 +51,7 @@ namespace ProjectManagementApp.Gui
             }
         }
 
-        private bool ValidateInput(out DateTime birthDate, out DateTime startDate, out string ssn, out Decimal salary)
+        private bool ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out Decimal salary)
         {
             bool firstNameBool = Validate.IsPersonNameValid(TextBox_FirstName.Text);
             bool lastNameBool = Validate.IsPersonNameValid(TextBox_LastName.Text);
@@ -69,10 +69,24 @@ namespace ProjectManagementApp.Gui
             }
         }
 
+        private bool ValidateContactInput(out string phone)
+        {
+            bool emailBool = Validate.IsEmailValid(TextBox_Email.Text);
+            bool phoneBool = Validate.IsPhoneValid(TextBox_Phone.Text, out phone);
+            if(emailBool && phoneBool)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 		private void Button_SaveNewEmployee_Click(object sender, RoutedEventArgs e)
 		{
 			Employee employee = new Employee();
-            bool inputIsValid = ValidateInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
+            bool inputIsValid = ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
             if (inputIsValid)
             {
                 try
@@ -103,7 +117,7 @@ namespace ProjectManagementApp.Gui
             if(selectedEmployee != null)
             {
                 Employee employee = model.Employees.Find(selectedEmployee.Id);
-                bool inputIsValid = ValidateInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
+                bool inputIsValid = ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
                 if (inputIsValid)
                 {
                     try
@@ -147,23 +161,46 @@ namespace ProjectManagementApp.Gui
             if (selectedEmployee != null)
             {
                 Employee employee = model.Employees.Find(selectedEmployee.Id);
-                if (employee.ContactInfo == null)
+                bool InputIsValid = ValidateContactInput(out string phone);
+                if (InputIsValid)
                 {
-                    ContactInfo contactInfo = new ContactInfo
+                    if(employee.ContactInfo == null)
                     {
-                        Email = TextBox_Email.Text,
-                        Phone = TextBox_Phone.Text
-                    };
-                    employee.ContactInfo = contactInfo;
+                        ContactInfo contactInfo = new ContactInfo();
+                        try
+                        {
+                            contactInfo.Email = TextBox_Email.Text;
+                            contactInfo.Phone = phone;
+                            employee.ContactInfo = contactInfo;
+                            model.SaveChanges();
+                            DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                            ClearTextBoxes();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Noget gik galt: "+ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            employee.ContactInfo.Email = TextBox_Email.Text;
+                            employee.ContactInfo.Phone = phone;
+                            model.SaveChanges();
+                            DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                            ClearTextBoxes();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Noget gik galt: "+ex.Message);
+                        }
+                    }
                 }
                 else
                 {
-                    employee.ContactInfo.Email = TextBox_Email.Text;
-                    employee.ContactInfo.Phone = TextBox_Phone.Text;
+                    MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
                 }
-                model.SaveChanges();
-                DataGrid_Employees.ItemsSource = model.Employees.ToList();
-                ClearTextBoxes();
             }
 		}
 

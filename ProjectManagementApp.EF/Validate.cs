@@ -11,7 +11,7 @@ namespace ProjectManagementApp.EF
     {
         public static bool IsPersonNameValid(string s)
         {
-            Regex regex = new Regex("^[A-Z][a-z][A-Za-z]*$");
+            Regex regex = new Regex("^[A-Z][a-z][A-Z]?[a-z]{0,47}$");
             if (regex.IsMatch(s))
                 return true;
             else
@@ -27,17 +27,38 @@ namespace ProjectManagementApp.EF
                 return false;
         }
 
-        public static bool IsPhoneValid(string s)
+        public static bool IsPhoneValid(string s, out string phone)
         {
-            Regex regex = new Regex(@"^(\+45 )?(\d ?){7}\d$");//For Danish phone numbers
-            //Regex regex = new Regex(@"^(\+\d{1,3} )?(\d ?)+\d$");//For international phone numbers
+            phone = s;
+            int index = phone.IndexOf(" ");
+            if(index != -1)
+            {
+                phone = phone.Remove(index, 1).Insert(index, "_");
+            }
+            //Regex regex = new Regex(@"^(\+45 ?)?(\d ?){7}\d$");//For Danish phone numbers
+            Regex regex = new Regex(@"^(\+\d{1,3} ?)?(\d ?)+\d$");//For international phone numbers
             if (regex.IsMatch(s))
+            {
+                if (phone.Contains("+45"))
+                {
+                    phone = phone.Remove(0,3);
+                    phone = phone.Replace("_", "");
+                }
+                else if (!phone.Contains("+"))
+                {
+                    phone = phone.Replace("_", "");
+                }
+                phone = phone.Replace(" ", "");
+                phone = phone.Replace("_", " ");
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
-        public static bool IsDateValid(string s,out DateTime date)
+        public static bool IsDateValid(string s, out DateTime date)
         {
             bool dateBool = DateTime.TryParse(s,out date);
             if (dateBool)
@@ -76,7 +97,7 @@ namespace ProjectManagementApp.EF
                 
         }
 
-        public static bool IsSalaryValid(string s,out decimal salary)
+        public static bool IsSalaryValid(string s, out decimal salary)
         {
             Regex regex = new Regex(@"^\d+([\.,]\d+)?");
             if (regex.IsMatch(s))
