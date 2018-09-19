@@ -130,10 +130,25 @@ namespace ProjectManagementApp.EF
         {
             s = s.Replace(".", ",");
             bool isDecimal = Decimal.TryParse(s, out salary);
-            if (salary > 0.0m)
-                return true;
+            if (isDecimal)
+            {
+                if (salary > 0.0m)
+                    return true;
+                else
+                    return false;
+            }
             else
-                return false;
+            {
+                if (string.IsNullOrEmpty(s))
+                {
+                    s = null;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         public static bool IsEntityNameValid(string s)

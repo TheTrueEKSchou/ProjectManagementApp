@@ -26,7 +26,7 @@ namespace ProjectManagementApp.EF
             }
             set
             {
-                if(value == null)
+                if(value != null)
                 {
                     startDate = value;
                 }
