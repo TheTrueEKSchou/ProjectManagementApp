@@ -38,6 +38,7 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -54,6 +55,10 @@
     <Compile Include="ContactInfo.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="Partials\Employee.cs" />
+    <Compile Include="Partials\Project.cs" />
+    <Compile Include="Partials\Team.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />

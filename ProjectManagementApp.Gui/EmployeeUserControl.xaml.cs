@@ -16,20 +16,20 @@ using ProjectManagementApp.EF;
 
 namespace ProjectManagementApp.Gui
 {
-	/// <summary>
-	/// Interaction logic for EmployeeUserControl.xaml
-	/// </summary>
-	public partial class EmployeeUserControl : UserControl
-	{
-		protected Model model;
-		private Employee selectedEmployee;
+    /// <summary>
+    /// Interaction logic for EmployeeUserControl.xaml
+    /// </summary>
+    public partial class EmployeeUserControl : UserControl
+    {
+        protected Model model;
+        private Employee selectedEmployee;
 
-		public EmployeeUserControl()
-		{
-			InitializeComponent();
-			model = new Model();
-			DataGrid_Employees.ItemsSource = model.Employees.ToList();
-		}
+        public EmployeeUserControl()
+        {
+            InitializeComponent();
+            model = new Model();
+            DataGrid_Employees.ItemsSource = model.Employees.ToList();
+        }
 
         private bool ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out Decimal salary)
         {
@@ -63,22 +63,14 @@ namespace ProjectManagementApp.Gui
             }
         }
 
-		private void Button_SaveNewEmployee_Click(object sender, RoutedEventArgs e)
-		{
+        private void Button_SaveNewEmployee_Click(object sender, RoutedEventArgs e)
+        {
             bool inputIsValid = ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
             if (inputIsValid)
             {
                 try
                 {
-                    Employee employee = new Employee
-                    {
-                        FirstName = TextBox_FirstName.Text,
-                        LastName = TextBox_LastName.Text,
-                        BirthDate = birthDate,
-                        StartDate = startDate,
-                        Ssn = ssn,
-                        Salary = salary
-                    };
+                    Employee employee = new Employee(TextBox_FirstName.Text, TextBox_LastName.Text, birthDate, ssn, startDate, salary);
                     model.Employees.Add(employee);
                     model.SaveChanges();
                     ClearTextBoxes();
@@ -94,9 +86,9 @@ namespace ProjectManagementApp.Gui
                 MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
             }
         }
-		
-		private void Button_UpdateEmployee_Click(object sender, RoutedEventArgs e)
-		{
+        
+        private void Button_UpdateEmployee_Click(object sender, RoutedEventArgs e)
+        {
             if(selectedEmployee != null)
             {
                 bool inputIsValid = ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out decimal salary);
@@ -125,7 +117,7 @@ namespace ProjectManagementApp.Gui
                     MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
                 }
             }
-		}
+        }
 
         private void Button_RemoveEmployee_Click(object sender, RoutedEventArgs e)
         {
@@ -140,7 +132,7 @@ namespace ProjectManagementApp.Gui
         }
 
         private void Button_UpdateContactInfo_Click(object sender, RoutedEventArgs e)
-		{
+        {
             if (selectedEmployee != null)
             {
                 bool InputIsValid = ValidateContactInput(out string phone);
@@ -185,51 +177,51 @@ namespace ProjectManagementApp.Gui
                     MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
                 }
             }
-		}
+        }
 
-		private void DataGrid_Employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			selectedEmployee = DataGrid_Employees.SelectedItem as Employee;
-			if(selectedEmployee != null)
-			{
-				if (selectedEmployee.ContactInfo != null)
-				{
-					TextBox_Email.Text = selectedEmployee.ContactInfo.Email;
-					TextBox_Phone.Text = selectedEmployee.ContactInfo.Phone;
-				}
-				else
-				{
-					TextBox_Email.Text = "";
-					TextBox_Phone.Text = "";
-				}
-				TextBox_FirstName.Text = selectedEmployee.FirstName;
-				TextBox_LastName.Text = selectedEmployee.LastName;
-				DatePicker_BirthDate.Text = selectedEmployee.BirthDate.ToString();
-				DatePicker_StartDate.Text = selectedEmployee.StartDate.ToString();
-				TextBox_Ssn.Text = selectedEmployee.Ssn;
-				TextBox_Salary.Text = selectedEmployee.Salary.ToString();
-			}
-		}
-
-		private void ClearTextBoxes()
-		{
-			TextBox_FirstName.Text = "";
-			TextBox_LastName.Text = "";
-			DatePicker_BirthDate.Text = "";
-			DatePicker_StartDate.Text = "";
-			TextBox_Ssn.Text = "";
-			TextBox_Salary.Text = "";
-			TextBox_Email.Text = "";
-			TextBox_Phone.Text = "";
-			DataGrid_Employees.SelectedItem = null;
-		}
-
-		private void Grid_Employee_KeyDown(object sender, KeyEventArgs e)
-		{
-			if(e.Key == Key.Escape)
-			{
-				ClearTextBoxes();
+        private void DataGrid_Employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedEmployee = DataGrid_Employees.SelectedItem as Employee;
+            if(selectedEmployee != null)
+            {
+                if (selectedEmployee.ContactInfo != null)
+                {
+                    TextBox_Email.Text = selectedEmployee.ContactInfo.Email;
+                    TextBox_Phone.Text = selectedEmployee.ContactInfo.Phone;
+                }
+                else
+                {
+                    TextBox_Email.Text = "";
+                    TextBox_Phone.Text = "";
+                }
+                TextBox_FirstName.Text = selectedEmployee.FirstName;
+                TextBox_LastName.Text = selectedEmployee.LastName;
+                DatePicker_BirthDate.Text = selectedEmployee.BirthDate.ToString();
+                DatePicker_StartDate.Text = selectedEmployee.StartDate.ToString();
+                TextBox_Ssn.Text = selectedEmployee.Ssn;
+                TextBox_Salary.Text = selectedEmployee.Salary.ToString();
             }
-		}
+        }
+
+        private void ClearTextBoxes()
+        {
+            TextBox_FirstName.Text = "";
+            TextBox_LastName.Text = "";
+            DatePicker_BirthDate.Text = "";
+            DatePicker_StartDate.Text = "";
+            TextBox_Ssn.Text = "";
+            TextBox_Salary.Text = "";
+            TextBox_Email.Text = "";
+            TextBox_Phone.Text = "";
+            DataGrid_Employees.SelectedItem = null;
+        }
+
+        private void Grid_Employee_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                ClearTextBoxes();
+            }
+        }
     }
 }

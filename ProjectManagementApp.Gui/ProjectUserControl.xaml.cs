@@ -23,11 +23,14 @@ namespace ProjectManagementApp.Gui
     {
         protected Model model;
         protected Project selectedProject;
+        protected Team selectedTeam;
+
         public ProjectUserControl()
         {
             InitializeComponent();
             model = new Model();
             DataGrid_Projects.ItemsSource = model.Projects.ToList();
+            DataGrid_Teams.ItemsSource = model.Teams.ToList();
         }
 
         private bool ValidateProjectInput(out DateTime startDate, out DateTime endDate, out decimal budgetLimit)
@@ -120,6 +123,43 @@ namespace ProjectManagementApp.Gui
             }
         }
 
+        private void Button_AddToProject_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedProject != null && selectedTeam != null)
+            {
+                Team team = model.Teams.Find(selectedTeam.Id);
+                if (team.ProjectId == null)
+                {
+                    if (selectedTeam.CalculatePay()+selectedProject.CalulculatePay() <= selectedProject.BudgetLimit)
+                    {
+                        team.ProjectId = selectedProject.Id;
+                        model.SaveChanges();
+                        ClearTextBoxes();
+                        DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Kan ikke tilsætte team da projektets budget grænse vil blive overskræden.");
+                    }
+                }
+            }
+        }
+
+        private void Button_RemoveFromProject_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTeam != null)
+            {
+                Team team = model.Teams.Find(selectedTeam.Id);
+                if (team.ProjectId != null)
+                {
+                    team.ProjectId = null;
+                    model.SaveChanges();
+                    ClearTextBoxes();
+                    DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                }
+            }
+        }
+
         private void DataGrid_Projects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedProject = DataGrid_Projects.SelectedItem as Project;
@@ -133,6 +173,11 @@ namespace ProjectManagementApp.Gui
             }
         }
 
+        private void DataGrid_Teams_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedTeam = DataGrid_Teams.SelectedItem as Team;
+        }
+
         private void ClearTextBoxes()
         {
             TextBox_Name.Text = "";
@@ -142,6 +187,13 @@ namespace ProjectManagementApp.Gui
             TextBox_BudgetLimit.Text = "";
         }
 
-        
+        private void Grid_Project_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                ClearTextBoxes();
+                DataGrid_Projects.SelectedItem = null;
+            }
+        }
     }
 }
