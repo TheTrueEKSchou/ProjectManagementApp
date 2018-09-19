@@ -81,7 +81,11 @@ namespace ProjectManagementApp.EF
             }
         }
 
-        public decimal CalulculatePay()
+        /// <summary>
+        /// Calculates the total salary of all employees of all the teams in the project.
+        /// </summary>
+        /// <returns></returns>
+        public decimal CalculatePay()
         {
             decimal pay = 0.0m;
             foreach(Team team in Teams)

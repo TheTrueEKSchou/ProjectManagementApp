@@ -92,7 +92,8 @@
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
-
+                        <Label Grid.Column="0" Grid.Row="1" Content="Udgifter: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <Label Grid.Column="1" Grid.Row="1" Content="" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="Label_Pay"/>
                         <Button Grid.Column="0" Grid.Row="3" Content="Tilsæt" Height="25" x:Name="Button_AddToProject" Click="Button_AddToProject_Click" />
                         <Button Grid.Column="1" Grid.Row="3" Content="Fjern" Height="25" x:Name="Button_RemoveFromProject" Click="Button_RemoveFromProject_Click"/>
                     </Grid>

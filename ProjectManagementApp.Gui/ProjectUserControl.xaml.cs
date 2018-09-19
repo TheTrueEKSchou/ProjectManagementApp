@@ -130,12 +130,13 @@ namespace ProjectManagementApp.Gui
                 Team team = model.Teams.Find(selectedTeam.Id);
                 if (team.ProjectId == null)
                 {
-                    if (selectedTeam.CalculatePay()+selectedProject.CalulculatePay() <= selectedProject.BudgetLimit)
+                    if (selectedTeam.CalculatePay()+selectedProject.CalculatePay() <= selectedProject.BudgetLimit || selectedProject.BudgetLimit == 0.0m)
                     {
                         team.ProjectId = selectedProject.Id;
                         model.SaveChanges();
                         ClearTextBoxes();
                         DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                        Label_Pay.Content = selectedProject.CalculatePay();
                     }
                     else
                     {
@@ -156,6 +157,7 @@ namespace ProjectManagementApp.Gui
                     model.SaveChanges();
                     ClearTextBoxes();
                     DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                    Label_Pay.Content = selectedProject.CalculatePay();
                 }
             }
         }
@@ -170,6 +172,7 @@ namespace ProjectManagementApp.Gui
                 DatePicker_StartDate.Text = selectedProject.StartDate.ToString();
                 DatePicker_EndDate.Text = selectedProject.EndDate.ToString();
                 TextBox_BudgetLimit.Text = selectedProject.BudgetLimit.ToString();
+                Label_Pay.Content = selectedProject.CalculatePay();
             }
         }
 
@@ -193,6 +196,11 @@ namespace ProjectManagementApp.Gui
             {
                 ClearTextBoxes();
                 DataGrid_Projects.SelectedItem = null;
+            }
+            else if (e.Key == Key.LeftCtrl)
+            {
+                DataGrid_Projects.ItemsSource = model.Projects.ToList();
+                DataGrid_Teams.ItemsSource = model.Teams.ToList();
             }
         }
     }

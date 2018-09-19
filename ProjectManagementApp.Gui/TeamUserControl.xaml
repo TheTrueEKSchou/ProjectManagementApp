@@ -74,6 +74,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Fornavn" Binding="{Binding FirstName}"/>
                                 <DataGridTextColumn Header="Efternavn" Binding="{Binding LastName}"/>
+                                <DataGridTextColumn Header="Løn" Binding="{Binding Salary}"/>
                                 <DataGridTextColumn Header="Team" Binding="{Binding Team.Name}"/>
                             </DataGrid.Columns>
                         </DataGrid>
@@ -90,7 +91,8 @@
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
-
+                        <Label Grid.Column="0" Grid.Row="1" Content="Udgifter: " VerticalAlignment="Center" HorizontalAlignment="right"/>
+                        <Label Grid.Column="1" Grid.Row="1" Content="" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="Label_Pay"/>
                         <Button Grid.Column="0" Grid.Row="3" Content="Tilsæt" Height="25" x:Name="Button_AddToTeam" Click="Button_AddToTeam_Click"/>
                         <Button Grid.Column="1" Grid.Row="3" Content="Fjern" Height="25" x:Name="Button_RemoveFromTeam" Click="Button_RemoveFromTeam_Click"/>
                     </Grid>

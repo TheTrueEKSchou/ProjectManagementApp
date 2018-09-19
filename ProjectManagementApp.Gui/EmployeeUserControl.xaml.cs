@@ -22,7 +22,7 @@ namespace ProjectManagementApp.Gui
     public partial class EmployeeUserControl : UserControl
     {
         protected Model model;
-        private Employee selectedEmployee;
+        protected Employee selectedEmployee;
 
         public EmployeeUserControl()
         {
@@ -31,6 +31,14 @@ namespace ProjectManagementApp.Gui
             DataGrid_Employees.ItemsSource = model.Employees.ToList();
         }
 
+        /// <summary>
+        /// Validates the users input and converts the input into the correct datatypes.
+        /// </summary>
+        /// <param name="birthDate"></param>
+        /// <param name="startDate"></param>
+        /// <param name="ssn"></param>
+        /// <param name="salary"></param>
+        /// <returns>true if the input is valid and false if not.</returns>
         private bool ValidateEmployeeInput(out DateTime birthDate, out DateTime startDate, out string ssn, out Decimal salary)
         {
             bool firstNameBool = Validate.IsPersonNameValid(TextBox_FirstName.Text);
@@ -117,6 +125,10 @@ namespace ProjectManagementApp.Gui
                     MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
                 }
             }
+            else
+            {
+                MessageBox.Show("Du har ikke valgt en ansat.");
+            }
         }
 
         private void Button_RemoveEmployee_Click(object sender, RoutedEventArgs e)
@@ -128,6 +140,10 @@ namespace ProjectManagementApp.Gui
                 model.SaveChanges();
                 ClearTextBoxes();
                 DataGrid_Employees.ItemsSource = model.Employees.ToList();
+            }
+            else
+            {
+                MessageBox.Show("Du har ikke valgt en ansat.");
             }
         }
 
@@ -177,6 +193,10 @@ namespace ProjectManagementApp.Gui
                     MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
                 }
             }
+            else
+            {
+                MessageBox.Show("Du har ikke valgt en ansat.");
+            }
         }
 
         private void DataGrid_Employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -221,6 +241,10 @@ namespace ProjectManagementApp.Gui
             if(e.Key == Key.Escape)
             {
                 ClearTextBoxes();
+            }
+            else if (e.Key == Key.LeftCtrl)
+            {
+                DataGrid_Employees.ItemsSource = model.Employees.ToList();
             }
         }
     }

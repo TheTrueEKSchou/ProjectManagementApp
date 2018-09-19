@@ -9,6 +9,11 @@ namespace ProjectManagementApp.EF
 {
     public static class Validate
     {
+        /// <summary>
+        /// Check if person name is valid by checking if it starts with uppercase and is less than 50 characters long.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>true if the name is valid, false if it is invalid.</returns>
         public static bool IsPersonNameValid(string s)
         {
             Regex regex = new Regex("^[A-Z][a-z][A-Z]?[a-z]{0,47}$");
@@ -18,6 +23,11 @@ namespace ProjectManagementApp.EF
                 return false;
         }
 
+        /// <summary>
+        /// Check if email is valid.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>true if the email is valid, false if it is invalid.</returns>
         public static bool IsEmailValid(string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -34,6 +44,12 @@ namespace ProjectManagementApp.EF
             }
         }
 
+        /// <summary>
+        /// Checks if phone number is valid and formats it nicely if it is.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="phone"></param>
+        /// <returns>true if phone number is valid, false if it is invalid.</returns>
         public static bool IsPhoneValid(string s, out string phone)
         {
             phone = s;
@@ -56,7 +72,8 @@ namespace ProjectManagementApp.EF
                     {
                         phone = phone.Remove(0, 3);
                         phone = phone.Replace("_", "");
-                        if(phone.Length != 8)
+                        phone = phone.Replace(" ", "");
+                        if (phone.Length != 8)
                         {
                             return false;
                         }
@@ -64,7 +81,8 @@ namespace ProjectManagementApp.EF
                     else if (!phone.Contains("+"))
                     {
                         phone = phone.Replace("_", "");
-                        if(phone.Length != 8)
+                        phone = phone.Replace(" ", "");
+                        if (phone.Length != 8)
                         {
                             return false;
                         }

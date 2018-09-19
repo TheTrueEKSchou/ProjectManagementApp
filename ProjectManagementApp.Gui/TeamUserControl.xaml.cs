@@ -56,6 +56,7 @@ namespace ProjectManagementApp.Gui
                 TextBox_Description.Text = selectedTeam.Description;
                 DatePicker_StartDate.Text = selectedTeam.StartDate.ToString();
                 DatePicker_EndDate.Text = selectedTeam.ExpectedEnd.ToString();
+                Label_Pay.Content = selectedTeam.CalculatePay();
             }
         }
 
@@ -118,6 +119,10 @@ namespace ProjectManagementApp.Gui
                     MessageBox.Show("Ikke alle input felter er udfyldt korrekt.");
                 }
             }
+            else
+            {
+                MessageBox.Show("Du har ikke valgt et team.");
+            }
         }
 
         private void Button_Remove_Click(object sender, RoutedEventArgs e)
@@ -125,14 +130,6 @@ namespace ProjectManagementApp.Gui
             if (selectedTeam != null)
             {
                 Team team = model.Teams.Find(selectedTeam.Id);
-                List<Employee> employees = model.Employees.ToList();
-                foreach(Employee employee in employees)
-                {
-                    if(employee.TeamId == team.Id)
-                    {
-                        employee.TeamId = null;
-                    }
-                }
                 model.Teams.Remove(team);
                 model.SaveChanges();
                 ClearTextBoxes();
@@ -157,6 +154,11 @@ namespace ProjectManagementApp.Gui
                 ClearTextBoxes();
                 DataGrid_Teams.SelectedItem = null;
             }
+            else if (e.Key == Key.LeftCtrl)
+            {
+                DataGrid_Teams.ItemsSource = model.Teams.ToList();
+                DataGrid_Employees.ItemsSource = model.Employees.ToList();
+            }
         }
 
         private void DataGrid_Employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -166,7 +168,7 @@ namespace ProjectManagementApp.Gui
 
         private void Button_AddToTeam_Click(object sender, RoutedEventArgs e)
         {
-            if(selectedTeam != null && selectedEmployee != null)
+            if(selectedTeam != null || selectedEmployee != null)
             {
                 Employee employee = model.Employees.Find(selectedEmployee.Id);
                 if (employee.TeamId == null)
@@ -175,7 +177,16 @@ namespace ProjectManagementApp.Gui
                     model.SaveChanges();
                     ClearTextBoxes();
                     DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                    Label_Pay.Content = selectedTeam.CalculatePay();
                 }
+                else
+                {
+                    MessageBox.Show("Den valgte ansat er allerede en del af et team.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Du skal vælge både et team og en ansat for at tilføje.");
             }
         }
 
@@ -190,7 +201,16 @@ namespace ProjectManagementApp.Gui
                     model.SaveChanges();
                     ClearTextBoxes();
                     DataGrid_Employees.ItemsSource = model.Employees.ToList();
+                    Label_Pay.Content = selectedTeam.CalculatePay();
                 }
+                else
+                {
+                    MessageBox.Show("Den valgte ansat er ikke en del af et team.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Du har ikke valgt en ansat.");
             }
         }
     }
