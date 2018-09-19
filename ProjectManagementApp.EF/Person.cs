@@ -21,6 +21,8 @@ namespace ProjectManagementApp.EF
             Ssn = ssn;
         }
 
+        public Person() { }
+
         public string FirstName
         {
             get

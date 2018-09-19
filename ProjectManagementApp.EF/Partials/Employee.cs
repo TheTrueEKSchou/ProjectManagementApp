@@ -18,6 +18,8 @@ namespace ProjectManagementApp.EF
             Salary = salary;
         }
 
+        public Employee() { }
+
         public DateTime StartDate
         {
             get

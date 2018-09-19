@@ -20,41 +20,63 @@ namespace ProjectManagementApp.EF
 
         public static bool IsEmailValid(string s)
         {
-            Regex regex = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
-            if (regex.IsMatch(s))
+            if (string.IsNullOrEmpty(s))
+            {
                 return true;
+            }
             else
-                return false;
+            {
+                Regex regex = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
+                if (regex.IsMatch(s))
+                    return true;
+                else
+                    return false;
+            }
         }
 
         public static bool IsPhoneValid(string s, out string phone)
         {
             phone = s;
-            int index = phone.IndexOf(" ");
-            if(index != -1)
+            if (string.IsNullOrEmpty(s))
             {
-                phone = phone.Remove(index, 1).Insert(index, "_");
-            }
-            //Regex regex = new Regex(@"^(\+45 ?)?(\d ?){7}\d$");//For Danish phone numbers only
-            Regex regex = new Regex(@"^(\+\d{1,3} ?)?(\d ?)+\d$");//For various phone numbers
-            if (regex.IsMatch(s))
-            {
-                if (phone.Contains("+45"))
-                {
-                    phone = phone.Remove(0,3);
-                    phone = phone.Replace("_", "");
-                }
-                else if (!phone.Contains("+"))
-                {
-                    phone = phone.Replace("_", "");
-                }
-                phone = phone.Replace(" ", "");
-                phone = phone.Replace("_", " ");
                 return true;
             }
             else
             {
-                return false;
+                int index = phone.IndexOf(" ");
+                if (index != -1)
+                {
+                    phone = phone.Remove(index, 1).Insert(index, "_");
+                }
+                //Regex regex = new Regex(@"^(\+45 ?)?(\d ?){7}\d$");//For Danish phone numbers only
+                Regex regex = new Regex(@"^(\+\d{1,3} ?)?(\d ?)+\d$");//For various phone numbers
+                if (regex.IsMatch(s))
+                {
+                    if (phone.Contains("+45"))
+                    {
+                        phone = phone.Remove(0, 3);
+                        phone = phone.Replace("_", "");
+                        if(phone.Length != 8)
+                        {
+                            return false;
+                        }
+                    }
+                    else if (!phone.Contains("+"))
+                    {
+                        phone = phone.Replace("_", "");
+                        if(phone.Length != 8)
+                        {
+                            return false;
+                        }
+                    }
+                    phone = phone.Replace(" ", "");
+                    phone = phone.Replace("_", " ");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -128,21 +150,21 @@ namespace ProjectManagementApp.EF
 
         public static bool IsSalaryValid(string s, out decimal salary)
         {
-            s = s.Replace(".", ",");
-            bool isDecimal = Decimal.TryParse(s, out salary);
-            if (isDecimal)
+            if (string.IsNullOrEmpty(s))
             {
-                if (salary > 0.0m)
-                    return true;
-                else
-                    return false;
+                salary = 0.0m;
+                return true;
             }
             else
             {
-                if (string.IsNullOrEmpty(s))
+                s = s.Replace(".", ",");
+                bool isDecimal = Decimal.TryParse(s, out salary);
+                if (isDecimal)
                 {
-                    s = null;
-                    return true;
+                    if (salary >= 0.0m)
+                        return true;
+                    else
+                        return false;
                 }
                 else
                 {
