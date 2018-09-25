@@ -12,8 +12,8 @@ namespace ProjectManagementApp.EF
         protected string lastName;
         protected DateTime birthDate;
         protected string ssn;
-        protected string privatePhone;
-        protected string privateEmail;
+        //protected string privatePhone;
+        //protected string privateEmail;
 
         public Person(string firstName, string lastName, DateTime birthDate, string ssn, string privatePhone, string privateEmail)
         {
@@ -21,8 +21,8 @@ namespace ProjectManagementApp.EF
             LastName = lastName;
             BirthDate = birthDate;
             Ssn = ssn;
-            PrivatePhone = privatePhone;
-            PrivateEmail = privateEmail;
+            //PrivatePhone = privatePhone;
+            //PrivateEmail = privateEmail;
         }
 
         public Person() { }
@@ -103,7 +103,7 @@ namespace ProjectManagementApp.EF
             }
         }
 
-        public string PrivatePhone
+        /*public string PrivatePhone
         {
             get
             {
@@ -139,6 +139,6 @@ namespace ProjectManagementApp.EF
                     throw new ArgumentException();
                 }
             }
-        }
+        }*/
     }
 }

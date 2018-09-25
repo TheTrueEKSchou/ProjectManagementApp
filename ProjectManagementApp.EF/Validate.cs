@@ -23,6 +23,15 @@ namespace ProjectManagementApp.EF
                 return false;
         }
 
+        public static bool IsEntityNameValid(string s)
+        {
+            Regex regex = new Regex("^[A-Z][A-Za-z0-9 ]{0,49}$");
+            if (regex.IsMatch(s))
+                return true;
+            else
+                return false;
+        }
+
         /// <summary>
         /// Check if email is valid.
         /// </summary>
@@ -189,15 +198,6 @@ namespace ProjectManagementApp.EF
                     return false;
                 }
             }
-        }
-
-        public static bool IsEntityNameValid(string s)
-        {
-            Regex regex = new Regex("^[A-Z][A-Za-z0-9 ]{0,49}$");
-            if (regex.IsMatch(s))
-                return true;
-            else
-                return false;
         }
     }
 }
