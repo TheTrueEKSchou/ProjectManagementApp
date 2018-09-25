@@ -12,13 +12,17 @@ namespace ProjectManagementApp.EF
         protected string lastName;
         protected DateTime birthDate;
         protected string ssn;
+        protected string privatePhone;
+        protected string privateEmail;
 
-        public Person(string firstName, string lastName, DateTime birthDate, string ssn)
+        public Person(string firstName, string lastName, DateTime birthDate, string ssn, string privatePhone, string privateEmail)
         {
             FirstName = firstName;
             LastName = lastName;
             BirthDate = birthDate;
             Ssn = ssn;
+            PrivatePhone = privatePhone;
+            PrivateEmail = privateEmail;
         }
 
         public Person() { }
@@ -91,6 +95,44 @@ namespace ProjectManagementApp.EF
                 if (Validate.IsSsnValid(value, out string ssn))
                 {
                     this.ssn = ssn;
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
+            }
+        }
+
+        public string PrivatePhone
+        {
+            get
+            {
+                return privatePhone;
+            }
+            set
+            {
+                if(Validate.IsPhoneValid(value, out string phone))
+                {
+                    privatePhone = phone;
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
+            }
+        }
+
+        public string PrivateEmail
+        {
+            get
+            {
+                return privateEmail;
+            }
+            set
+            {
+                if (Validate.IsEmailValid(value))
+                {
+                    privateEmail = value;
                 }
                 else
                 {

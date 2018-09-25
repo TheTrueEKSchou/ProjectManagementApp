@@ -11,14 +11,14 @@ namespace ProjectManagementApp.EF
         protected DateTime startDate;
         protected decimal salary;
 
-        public Employee(string firstName, string lastName, DateTime birthDate, string ssn, DateTime startDate, decimal salary)
-            : base(firstName, lastName, birthDate, ssn)
+        public Employee(string firstName, string lastName, DateTime birthDate, string ssn, string privatePhone, string privateEmail, DateTime startDate, decimal salary)
+            : base(firstName, lastName, birthDate, ssn, privatePhone, privateEmail)
         {
             StartDate = startDate;
             Salary = salary;
         }
 
-        public Employee() { }
+        public Employee() : base() { }
 
         public DateTime StartDate
         {

@@ -78,7 +78,15 @@ namespace ProjectManagementApp.Gui
             {
                 try
                 {
-                    Employee employee = new Employee(TextBox_FirstName.Text, TextBox_LastName.Text, birthDate, ssn, startDate, salary);
+                    Employee employee = new Employee
+                    {
+                        FirstName = TextBox_FirstName.Text,
+                        LastName = TextBox_LastName.Text,
+                        BirthDate = birthDate,
+                        StartDate = startDate,
+                        Ssn = ssn,
+                        Salary = salary
+                    };
                     model.Employees.Add(employee);
                     model.SaveChanges();
                     ClearTextBoxes();
